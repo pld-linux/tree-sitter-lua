@@ -1,7 +1,7 @@
 Summary:	Lua grammar for tree-sitter
 Name:		tree-sitter-lua
 Version:	0.2.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 Source0:	https://github.com/tree-sitter-grammars/tree-sitter-lua/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -9,7 +9,7 @@ Source0:	https://github.com/tree-sitter-grammars/tree-sitter-lua/archive/v%{vers
 URL:		https://github.com/tree-sitter-grammars/tree-sitter-lua
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		ts_lua_soname	libtree-sitter-lua.so.0
+%define		ts_lua_soname	libtree-sitter-lua.so.0.14
 
 %description
 Lua grammar for tree-sitter.
@@ -63,6 +63,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/nvim/parser
 	LIBDIR="%{_libdir}" \
 	PCLIBDIR="%{_pkgconfigdir}"
 
+%{__ln_s} -f %{_libdir}/%{ts_lua_soname} $RPM_BUILD_ROOT%{_libdir}/libtree-sitter-lua.so
+
 %{__ln_s} %{_libdir}/%{ts_lua_soname} $RPM_BUILD_ROOT%{_libdir}/nvim/parser/lua.so
 
 %clean
@@ -74,8 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.md README.md
-%attr(755,root,root) %{_libdir}/libtree-sitter-lua.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{ts_lua_soname}
+%attr(755,root,root) %{_libdir}/%{ts_lua_soname}
 
 %files devel
 %defattr(644,root,root,755)

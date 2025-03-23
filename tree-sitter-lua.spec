@@ -1,15 +1,15 @@
 Summary:	Lua grammar for tree-sitter
 Name:		tree-sitter-lua
-Version:	0.2.0
-Release:	2
+Version:	0.3.0
+Release:	1
 License:	MIT
 Group:		Libraries
 Source0:	https://github.com/tree-sitter-grammars/tree-sitter-lua/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e851527aa24801b8e9dcd1fb9eb3693f
+# Source0-md5:	9f746e332bbfd014fb3be88656818661
 URL:		https://github.com/tree-sitter-grammars/tree-sitter-lua
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		ts_lua_soname	libtree-sitter-lua.so.0.14
+%define		ts_lua_soname	libtree-sitter-lua.so.14.0
 
 %description
 Lua grammar for tree-sitter.

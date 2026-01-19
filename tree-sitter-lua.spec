@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	python3	# Python 3.x binding
+
 Summary:	Lua grammar for tree-sitter
 Summary(pl.UTF-8):	Gramatyka języka Lua dla tree-sittera
 Name:		tree-sitter-lua
@@ -9,6 +13,13 @@ Group:		Libraries
 Source0:	https://github.com/tree-sitter-grammars/tree-sitter-lua/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	52f8009d0bd6052557b10df0cb1028e8
 URL:		https://github.com/tree-sitter-grammars/tree-sitter-lua
+# c11
+BuildRequires:	gcc >= 6:4.7
+%if %{with python3}
+BuildRequires:	python3-devel >= 1:3.10
+BuildRequires:	python3-setuptools
+BuildRequires:	python3-wheel
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		soname_ver	15.0
@@ -55,6 +66,18 @@ Lua parser for Neovim.
 %description -n neovim-parser-lua -l pl.UTF-8
 Analizator składni języka Lua dla Neovima.
 
+%package -n python3-tree-sitter-lua
+Summary:	Lua parser for Python
+Summary(pl.UTF-8):	Analizator składni języka Lua dla Pythona
+Group:		Libraries/Python
+Requires:	python3-tree-sitter >= 0.24
+
+%description -n python3-tree-sitter-lua
+Lua parser for Python.
+
+%description -n python3-tree-sitter-lua -l pl.UTF-8
+Analizator składni języka Lua dla Pythona.
+
 %prep
 %setup -q
 
@@ -67,6 +90,10 @@ Analizator składni języka Lua dla Neovima.
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
+
+%if %{with python3}
+%py3_build
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -85,6 +112,13 @@ install -d $RPM_BUILD_ROOT%{_libdir}/nvim/parser
 
 # redundant symlink
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libtree-sitter-lua.so.15
+
+%if %{with python3}
+%py3_install
+
+%{__rm} $RPM_BUILD_ROOT%{py3_sitedir}/tree_sitter_lua/*.c
+
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -114,3 +148,16 @@ rm -rf $RPM_BUILD_ROOT
 %files -n neovim-parser-lua
 %defattr(644,root,root,755)
 %{_libdir}/nvim/parser/lua.so
+
+%if %{with python3}
+%files -n python3-tree-sitter-lua
+%defattr(644,root,root,755)
+%dir %{py3_sitedir}/tree_sitter_lua
+%{py3_sitedir}/tree_sitter_lua/_binding.abi3.so
+%{py3_sitedir}/tree_sitter_lua/__init__.py
+%{py3_sitedir}/tree_sitter_lua/__init__.pyi
+%{py3_sitedir}/tree_sitter_lua/py.typed
+%{py3_sitedir}/tree_sitter_lua/__pycache__
+%{py3_sitedir}/tree_sitter_lua/queries
+%{py3_sitedir}/tree_sitter_lua-%{version}-py*.egg-info
+%endif

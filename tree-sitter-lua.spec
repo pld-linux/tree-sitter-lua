@@ -117,7 +117,6 @@ install -d $RPM_BUILD_ROOT%{_libdir}/nvim/parser
 %py3_install
 
 %{__rm} $RPM_BUILD_ROOT%{py3_sitedir}/tree_sitter_lua/*.c
-
 %endif
 
 %clean

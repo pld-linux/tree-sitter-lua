@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	python3	# Python 3.x binding
+%bcond_without	tests	# Python binding load test
 
 Summary:	Lua grammar for tree-sitter
 Summary(pl.UTF-8):	Gramatyka języka Lua dla tree-sittera
@@ -19,6 +20,10 @@ BuildRequires:	gcc >= 6:4.7
 BuildRequires:	python3-devel >= 1:3.10
 BuildRequires:	python3-setuptools >= 1:42
 BuildRequires:	python3-wheel
+%if %{with tests}
+BuildRequires:	python3-tree-sitter >= 0.24
+%endif
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -94,6 +99,11 @@ Analizator składni języka Lua dla Pythona.
 
 %if %{with python3}
 %py3_build
+
+%if %{with tests}
+PYTHONPATH=$(readlink -f build-3/lib.*) \
+%{__python3} -m unittest discover -s bindings/python/tests
+%endif
 %endif
 
 %install

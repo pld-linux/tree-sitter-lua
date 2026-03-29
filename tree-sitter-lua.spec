@@ -8,13 +8,13 @@
 Summary:	Lua grammar for tree-sitter
 Summary(pl.UTF-8):	Gramatyka języka Lua dla tree-sittera
 Name:		tree-sitter-lua
-Version:	0.4.1
+Version:	0.5.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tree-sitter-grammars/tree-sitter-lua/releases
 Source0:	https://github.com/tree-sitter-grammars/tree-sitter-lua/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	52f8009d0bd6052557b10df0cb1028e8
+# Source0-md5:	0deb6e0992e299cbb14cf97047418117
 URL:		https://github.com/tree-sitter-grammars/tree-sitter-lua
 # c11
 BuildRequires:	gcc >= 6:4.7
